@@ -54,7 +54,7 @@ input-file:
 - microsoft.insights/preview/2017-11-01-preview/baseline_API.json
 - microsoft.insights/preview/2017-11-01-preview/calculateBaseline_API.json
 - microsoft.insights/stable/2018-03-01/metricAlert_API.json
-- microsoft.insights/stable/2018-03-01/resourceMetricAlert_API.json
+- microsoft.insights/stable/2018-03-01/scopedMetricAlert_API.json
 - microsoft.insights/stable/2018-04-16/scheduledQueryRule_API.json
 ```
 
@@ -167,7 +167,7 @@ These settings apply only when `--tag=package-2018-03-01-only` is specified on t
 input-file:
 - microsoft.insights/stable/2018-03-01/metricAlert_API.json
 - microsoft.insights/stable/2018-03-01/actionGroups_API.json
-- microsoft.insights/stable/2018-03-01/resourceMetricAlert_API.json
+- microsoft.insights/stable/2018-03-01/scopedMetricAlert_API.json
 ```
 
 ### Tag: package-2018-04-16-only

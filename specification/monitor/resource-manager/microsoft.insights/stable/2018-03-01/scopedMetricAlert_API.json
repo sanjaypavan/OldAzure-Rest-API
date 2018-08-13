@@ -31,7 +31,7 @@
     }
   },
   "paths": {
-    "/{resourceUri}/providers/providers/Microsoft.Insights/resourceMetricAlerts" : {
+    "/{resourceUri}/providers/providers/Microsoft.Insights/scopedMetricAlerts" : {
         "get": {
             "tags": [ "MetricAlerts" ],
             "description": "Retrieve alert rule definitions for the resrouce.",

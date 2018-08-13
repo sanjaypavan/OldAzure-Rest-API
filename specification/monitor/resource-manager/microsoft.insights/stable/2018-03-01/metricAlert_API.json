@@ -829,15 +829,6 @@
       "type": "string",
       "description": "The name of the status.",
       "x-ms-parameter-location": "method"
-    },
-    "ResourceUriParameter": {
-      "name": "resourceUri",
-      "in": "path",
-      "required": true,
-      "type": "string",
-      "description": "The identifier of the resource.",
-      "x-ms-parameter-location": "method",
-      "x-ms-skip-url-encoding": true
     }
   }
 }
