@@ -363,6 +363,14 @@
           "format": "duration",
           "description": "the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold."
         },
+        "targetResourceType" :{
+          "type" : "string",
+          "description" : "the resource type of the target resource(s) on which the alert is created/updated."
+        },
+        "targetResourceRegion" : {
+          "type" : "string",
+          "description" : "the region of the target resource(s) on which the alert is created/updated."
+        },
         "criteria": {
           "$ref": "#/definitions/MetricAlertCriteria",
           "description": "defines the specific alert criteria information."
@@ -498,7 +506,8 @@
       "properties": {
         "odata.type": {
           "enum": [
-            "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria"
+            "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+            "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
           ],
           "x-ms-enum": {
             "name": "odatatype",
@@ -530,7 +539,14 @@
       "description": "Specifies the metric alert criteria for a single resource that has multiple metric criteria."
     },
     "MetricCriteria": {
-      "required": [
+      "x-ms-discriminator-value": "StaticThresholdCriterion",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/MultiMetricCriteria"
+        }
+      ],
+     "required": [
         "name",
         "metricName",
         "operator",
@@ -606,7 +622,7 @@
         },
         "operator": {
           "type": "string",
-          "description": "the dimension operator."
+          "description": "the dimension operator. Only 'Include' and 'Exclude' are supported"
         },
         "values": {
           "type": "array",
@@ -617,7 +633,163 @@
         }
       },
       "description": "Specifies a metric dimension."
-    }
+    },
+    "DynamicThresholdMetricCriteria" : {
+      "x-ms-discriminator-value": "DynamicThresholdCriterion",
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/definitions/MultiMetricCriteria"
+        }
+      ],
+     "required": [
+        "name",
+        "metricName",
+        "operator",
+        "timeAggregation",
+        "alertSensitivity",
+        "failingPeriods"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Name of the criteria."
+        },
+        "metricName": {
+          "type": "string",
+          "description": "Name of the metric."
+        },
+        "metricNamespace": {
+          "type": "string",
+          "description": "Namespace of the metric."
+        },
+        "operator": {
+          "enum": [
+            "Equals",
+            "NotEquals",
+            "GreaterThan",
+            "GreaterThanOrEqual",
+            "LessThan",
+            "LessThanOrEqual"
+          ],
+          "x-ms-enum": {
+            "name": "Operator",
+            "modelAsString": true
+          },
+          "description": "the criteria operator."
+        },
+        "timeAggregation": {
+          "enum": [
+            "Average",
+            "Minimum",
+            "Maximum",
+            "Total"
+          ],
+          "x-ms-enum": {
+            "name": "AggregationType",
+            "modelAsString": true
+          },
+          "description": "the criteria time aggregation types."
+        },
+        "alertSensitivity": {
+          "enum" : [
+            "Low",
+            "Medium",
+            "High"
+          ],
+          "x-ms-enum" : {
+            "name" : "DynamicThresholdSensitivity",
+            "modelAsString": true
+          },
+          "description": "The alert sensitivity of the threshold"
+        },
+        "failingPeriods" : {
+          "type" : "object",
+          "$ref"  : "#/definitions/DynamicThresholdFailingPeriods",
+          "description" : "Pending from Meyadan"
+        },
+        "ignoreDataBefore" : {
+          "type" : "string",
+          "format": "date-time",
+          "description" :"Pending from Meydan"
+        },
+        "staticThresholdMax":{
+          "type" : "number",
+          "format" : "double",
+          "description": "Pending from Meyadan"
+        },
+        "staticThreshodMin": {
+          "type" : "number",
+          "format" : "double",
+          "description": "Pending from Meyadan"
+        },
+        "dimensions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/MetricDimension"
+          },
+          "description": "List of dimension conditions."
+        }
+      },
+      "description": "Criterion to filter metrics."
+    },
+    "DynamicThresholdFailingPeriods" : {
+      "required": [
+        "numberOfEvaluationPeriods",
+        "minFailingBucketsToAlert"
+      ],
+      "properties": {
+        "numberOfEvaluationPeriods": {
+          "type": "number",
+          "description": "Pending from Meydan"
+        },
+        "minFailingBucketsToAlert": {
+          "type": "number",
+          "description": "Pending from Meydan"
+        }
+      }
+    },
+    "MetricAlertMultipleResourceMultipleMetricCriteria":{
+      "x-ms-discriminator-value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
+      "type": "object",
+      "allOf":[
+        {
+          "$ref":"#/definitions/MetricAlertCriteria"
+        }
+      ],
+      "properties":{
+        "allOf":{
+          "type": "array",
+          "items":{
+            "$ref":"#/definitions/MultiMetricCriteria"
+          },
+          "description": "the list of multiple metric criteria for this 'all of' operation. "
+        }
+      },
+      "description": "Speficies the metric alert criteria for multiple resource that has multiple metric criteria."
+    },
+    "MultiMetricCriteria": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object"
+      },
+      "discriminator":"criterionType",
+      "properties":{
+        "criterionType" : {
+          "enum":[
+           "StaticThresholdCriterion" ,
+           "DynamicThresholdCriterion"
+          ],
+          "x-ms-enum" : {
+            "name" : "criterionType",
+            "modelAsString": true
+          },
+          "description":" Specifies the type of threshold criteria"
+        }
+      },
+      "required": ["criterionType"],
+      "description": "The types of conditions for a multi resource alert"
+    }    
   },
   "parameters": {
     "SubscriptionIdParameter": {
@@ -657,6 +829,15 @@
       "type": "string",
       "description": "The name of the status.",
       "x-ms-parameter-location": "method"
+    },
+    "ResourceUriParameter": {
+      "name": "resourceUri",
+      "in": "path",
+      "required": true,
+      "type": "string",
+      "description": "The identifier of the resource.",
+      "x-ms-parameter-location": "method",
+      "x-ms-skip-url-encoding": true
     }
   }
 }
