@@ -365,11 +365,11 @@
         },
         "targetResourceType" :{
           "type" : "string",
-          "description" : "the resource type of the target resource(s) on which the alert is created/updated."
+          "description" : "the resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria."
         },
         "targetResourceRegion" : {
           "type" : "string",
-          "description" : "the region of the target resource(s) on which the alert is created/updated."
+          "description" : "the region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria."
         },
         "criteria": {
           "$ref": "#/definitions/MetricAlertCriteria",
