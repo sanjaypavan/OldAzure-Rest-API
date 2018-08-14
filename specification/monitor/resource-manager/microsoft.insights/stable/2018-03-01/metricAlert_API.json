@@ -665,18 +665,15 @@
         },
         "operator": {
           "enum": [
-            "Equals",
-            "NotEquals",
             "GreaterThan",
-            "GreaterThanOrEqual",
-            "LessThan",
-            "LessThanOrEqual"
+            "LowerThan",
+            "GreaterOrLowerThan"
           ],
           "x-ms-enum": {
             "name": "Operator",
             "modelAsString": true
           },
-          "description": "the criteria operator."
+          "description": "Denotes the mathematical condition on which the violation will be estimated. Can also be viewed as the direction of the anomaly."
         },
         "timeAggregation": {
           "enum": [
@@ -711,17 +708,7 @@
         "ignoreDataBefore" : {
           "type" : "string",
           "format": "date-time",
-          "description" :"Pending from Meydan"
-        },
-        "staticThresholdMax":{
-          "type" : "number",
-          "format" : "double",
-          "description": "Pending from Meyadan"
-        },
-        "staticThreshodMin": {
-          "type" : "number",
-          "format" : "double",
-          "description": "Pending from Meyadan"
+          "description" :", The service will ignore the data that was ingested before the Date/Hour designated."
         },
         "dimensions": {
           "type": "array",
@@ -741,13 +728,14 @@
       "properties": {
         "numberOfEvaluationPeriods": {
           "type": "number",
-          "description": "Pending from Meydan"
+          "description": "The last number of periods"
         },
         "minFailingBucketsToAlert": {
           "type": "number",
-          "description": "Pending from Meydan"
+          "description": "The least number of violations"
         }
-      }
+      },
+      "description": "Describes the least number of violations in last number of periods on which the alert should be triggered."
     },
     "MetricAlertMultipleResourceMultipleMetricCriteria":{
       "x-ms-discriminator-value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
