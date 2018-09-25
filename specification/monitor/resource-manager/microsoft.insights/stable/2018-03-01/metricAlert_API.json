@@ -634,109 +634,6 @@
       },
       "description": "Specifies a metric dimension."
     },
-    "DynamicThresholdMetricCriteria" : {
-      "x-ms-discriminator-value": "DynamicThresholdCriterion",
-      "type": "object",
-      "allOf": [
-        {
-          "$ref": "#/definitions/MultiMetricCriteria"
-        }
-      ],
-     "required": [
-        "name",
-        "metricName",
-        "operator",
-        "timeAggregation",
-        "alertSensitivity",
-        "failingPeriods"
-      ],
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "Name of the criteria."
-        },
-        "metricName": {
-          "type": "string",
-          "description": "Name of the metric."
-        },
-        "metricNamespace": {
-          "type": "string",
-          "description": "Namespace of the metric."
-        },
-        "operator": {
-          "enum": [
-            "GreaterThan",
-            "LowerThan",
-            "GreaterOrLowerThan"
-          ],
-          "x-ms-enum": {
-            "name": "Operator",
-            "modelAsString": true
-          },
-          "description": "Denotes the mathematical condition on which the violation will be estimated. Can also be viewed as the direction of the anomaly."
-        },
-        "timeAggregation": {
-          "enum": [
-            "Average",
-            "Minimum",
-            "Maximum",
-            "Total"
-          ],
-          "x-ms-enum": {
-            "name": "AggregationType",
-            "modelAsString": true
-          },
-          "description": "the criteria time aggregation types."
-        },
-        "alertSensitivity": {
-          "enum" : [
-            "Low",
-            "Medium",
-            "High"
-          ],
-          "x-ms-enum" : {
-            "name" : "DynamicThresholdSensitivity",
-            "modelAsString": true
-          },
-          "description": "The alert sensitivity of the threshold"
-        },
-        "failingPeriods" : {
-          "type" : "object",
-          "$ref"  : "#/definitions/DynamicThresholdFailingPeriods",
-          "description" : "Pending from Meyadan"
-        },
-        "ignoreDataBefore" : {
-          "type" : "string",
-          "format": "date-time",
-          "description" :", The service will ignore the data that was ingested before the Date/Hour designated."
-        },
-        "dimensions": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/MetricDimension"
-          },
-          "description": "List of dimension conditions."
-        }
-      },
-      "description": "Criterion to filter metrics."
-    },
-    "DynamicThresholdFailingPeriods" : {
-      "required": [
-        "numberOfEvaluationPeriods",
-        "minFailingBucketsToAlert"
-      ],
-      "properties": {
-        "numberOfEvaluationPeriods": {
-          "type": "number",
-          "description": "The last number of periods"
-        },
-        "minFailingBucketsToAlert": {
-          "type": "number",
-          "description": "The least number of violations"
-        }
-      },
-      "description": "Describes the least number of violations in last number of periods on which the alert should be triggered."
-    },
     "MetricAlertMultipleResourceMultipleMetricCriteria":{
       "x-ms-discriminator-value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria",
       "type": "object",
@@ -765,8 +662,7 @@
       "properties":{
         "criterionType" : {
           "enum":[
-           "StaticThresholdCriterion" ,
-           "DynamicThresholdCriterion"
+           "StaticThresholdCriterion"            
           ],
           "x-ms-enum" : {
             "name" : "criterionType",
